@@ -1,0 +1,64 @@
+version: "3.1"
+
+services:
+  spk_mst:
+    image: mkenjis/ubspkcluster_img
+    environment:
+      - SPARK_HOST_SLAVES=spk1,spk2,spk3
+    deploy:
+      placement:
+        constraints:
+          - node.labels.hostlabel == hdpmst
+    networks:
+      - mynet
+    depends_on:
+      - spk1,spk2,spk3
+    ports:
+      - 4040:4040
+      - 8080:8080
+  spk1:
+    image: mkenjis/ubspkcluster_img
+    deploy:
+      placement:
+        constraints:
+          - node.labels.hostlabel == hdp1
+    networks:
+      - mynet
+  spk2:
+    image: mkenjis/ubspkcluster_img
+    deploy:
+      placement:
+        constraints:
+          - node.labels.hostlabel == hdp2
+    networks:
+      - mynet
+  spk3:
+    image: mkenjis/ubspkcluster_img
+    deploy:
+      placement:
+        constraints:
+          - node.labels.hostlabel == hdp3
+    networks:
+      - mynet
+
+  hdpmst:
+    image: mkenjis/ubhdp_img
+    deploy:
+      placement:
+        constraints:
+          - node.labels.hostlabel == hdpmst
+    volumes:
+      - .:/root/staging
+      - name0:/hadoop/hdfs/namenode
+      - data0:/hadoop/hdfs/datanode
+    networks:
+      - mynet
+
+networks:
+  mynet:
+    external:
+       name: mynet
+
+volumes:
+  name0:
+  data0:
