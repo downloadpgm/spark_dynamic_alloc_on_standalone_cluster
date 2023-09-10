@@ -71,6 +71,7 @@ spark.dynamicAllocation.executorIdleTimeout 2m
 ```
 
 3. copy spark-defaults.conf to all spark slaves
+NOTICE: let SPARK_WORKER_INSTANCES=1 as only one worker per node can be registered to External Shuffle Service
 ```shell
 $ scp spark-defaults.conf root@spk1:/usr/local/spark-2.3.2-bin-hadoop2.7/conf
 spark-defaults.conf                                                               100%  285   216.7KB/s   00:00    
