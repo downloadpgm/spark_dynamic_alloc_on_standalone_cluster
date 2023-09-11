@@ -63,15 +63,15 @@ $ vi spark-defaults.conf
 
 spark.shuffle.service.enabled true
 spark.dynamicAllocation.enabled true
-spark.dynamicAllocation.initialExecutors 1
+spark.dynamicAllocation.initialExecutors 3
 spark.dynamicAllocation.minExecutors 1
 spark.dynamicAllocation.maxExecutors 20
-spark.dynamicAllocation.schedulerBacklogTimeout 1m
-spark.dynamicAllocation.executorIdleTimeout 2m
+spark.dynamicAllocation.schedulerBacklogTimeout 30s
+spark.dynamicAllocation.executorIdleTimeout 1m
 ```
 
 3. copy spark-defaults.conf to all spark slaves
-NOTICE: let SPARK_WORKER_INSTANCES=1 as only one worker per node can be registered to External Shuffle Service
+NOTICE: let SPARK_WORKER_INSTANCES=1 as only one worker/node can be registered to External Shuffle Service
 ```shell
 $ scp spark-defaults.conf root@spk1:/usr/local/spark-2.3.2-bin-hadoop2.7/conf
 spark-defaults.conf                                                               100%  285   216.7KB/s   00:00    
@@ -81,19 +81,14 @@ $ scp spark-defaults.conf root@spk3:/usr/local/spark-2.3.2-bin-hadoop2.7/conf
 spark-defaults.conf                                                               100%  285    59.8KB/s   00:00
 ```
 
-4. start external shuffle service in each spark slave
-
-In spk1, spk2 and spk3, run :
-```shell
-$ start-shuffle-service.sh
-```
+4. start spark slaves
 
 In spkmst, run :
 ```shell
 $ start-slaves.sh
 ```
 
-5. start spark-shell
+5. start spark-shell ( automatically each spark executor registers with respective External Shuffle Service in the node )
 ```shell
 $ spark-shell --master spark://<spk_mst>:7077
 2023-09-06 14:46:07 WARN  NativeCodeLoader:62 - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
