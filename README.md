@@ -47,11 +47,6 @@ ux3l1ywtvjf7   spk_spk_mst.1   mkenjis/ubspkcluster_img:latest   node1     Runni
 
 1. access spark master node
 ```shell
-$ docker container ls   # run it in each node and check which <container ID> is running the Spark client constainer
-CONTAINER ID   IMAGE                                 COMMAND                  CREATED         STATUS         PORTS                                          NAMES
-ca25353fc988   mkenjis/ubspkcluster_img:latest   "/usr/bin/supervisord"   42 minutes ago   Up 42 minutes   4040/tcp, 7077/tcp, 8080-8082/tcp, 10000/tcp   spk_spk_mst.1.ux3l1ywtvjf7n54kwixdzf2dw
-9c59a0b6e029   mkenjis/ubhdp_img:latest          "/usr/bin/supervisord"   42 minutes ago   Up 42 minutes   9000/tcp                                       spk_hdpmst.1.nx0huvb6ent1on9ziprti9ldh
-
 $ docker container exec -it <spk_mst ID> bash
 ```
 
